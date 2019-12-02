@@ -5,7 +5,7 @@ import { Switch, Route } from "react-router-dom";
 import ShopPage from "./pages/shop/shop";
 import Header from "./components/header/header";
 import AuthenticationForm from "./pages/signIn-SignUp/signIn-SignUp";
-import { auth, createUserProfileDocument } from "./firebase/firebase.utils"
+import { auth, createUserProfileDocument } from "./firebase/firebase.utils";
 
 const HatsPage = () => (
   <div>
@@ -19,29 +19,26 @@ class App extends React.Component {
 
     this.state = {
       currentUser: null
-    }
+    };
   }
-  unsubscribeFromAuth = null
+  unsubscribeFromAuth = null;
 
   componentDidMount() {
-   this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
-      if(userAuth){
+    this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
+      if (userAuth) {
         const userRef = await createUserProfileDocument(userAuth);
 
         userRef.onSnapshot(snapshot => {
-        this.setState({
-          currentUser: {
-            id: snapshot.id,
-            ...snapshot.data()
-          }
-        })
-        console.log(this.state)
+          this.setState({
+            currentUser: {
+              id: snapshot.id,
+              ...snapshot.data()
+            }
+          });
         });
-        
       }
-      this.setState({ currentUser: userAuth })
-   
-    })
+      this.setState({ currentUser: userAuth });
+    });
   }
   componentWillUnmount() {
     this.unsubscribeFromAuth();
@@ -59,7 +56,6 @@ class App extends React.Component {
       </div>
     );
   }
- 
 }
 
 export default App;
